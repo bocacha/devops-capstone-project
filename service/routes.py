@@ -95,6 +95,8 @@ def get_accounts(account_id):
 #Assert that the return code was HTTP_404_NOT_FOUND.
 #Run nosetests and fix the code in routes.py until it passes.
 
+BASE_URL = "/accounts"
+
 def test_account_not_found(self):
     """It should return a 404 if the account is not found"""
     response = self.client.get(f"{BASE_URL}/0")
