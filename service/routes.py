@@ -57,6 +57,7 @@ def create_accounts():
         jsonify(message), status.HTTP_201_CREATED, {"Location": location_url}
     )
 
+
 ######################################################################
 # LIST ALL ACCOUNTS
 ######################################################################
@@ -74,7 +75,6 @@ def list_accounts():
 ######################################################################
 # READ AN ACCOUNT
 ######################################################################
-
 @app.route("/accounts/<int:account_id>", methods=["GET"])
 def get_accounts(account_id):
     """
@@ -94,8 +94,6 @@ def test_account_not_found(self):
     response = self.client.get(f"{BASE_URL}/0")
     self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
-
-
 ######################################################################
 # UPDATE AN EXISTING ACCOUNT
 ######################################################################
@@ -111,8 +109,6 @@ def update_account(account_id):
         abort(status.HTTP_404_NOT_FOUND, f"Account with id [{account_id}] could not be found.")
     # ... place your code here to update the account ...
     return account.serialize(), status.HTTP_200_OK
-
-    
 
 
 ######################################################################
@@ -130,6 +126,7 @@ def delete_account(account_id):
     if account:
         account.delete()
     return make_response("", status.HTTP_204_NO_CONTENT)
+
 
 ######################################################################
 #  U T I L I T Y   F U N C T I O N S
