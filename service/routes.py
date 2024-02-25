@@ -60,9 +60,6 @@ def create_accounts():
 ######################################################################
 # LIST ALL ACCOUNTS
 ######################################################################
-
-# ... place you code here to LIST accounts ...
-
 @app.route("/accounts", methods=["GET"])
 def list_accounts():
     """
@@ -90,11 +87,6 @@ def get_accounts(account_id):
         abort(status.HTTP_404_NOT_FOUND, f"Account with id [{account_id}] could not be found.")
     return account.serialize(), status.HTTP_200_OK
 
-#Create a test case called test_account_not_found(self).
-#Make a self.client.get() call to /accounts/{id} passing in 0 as the account id.
-#Assert that the return code was HTTP_404_NOT_FOUND.
-#Run nosetests and fix the code in routes.py until it passes.
-
 BASE_URL = "/accounts"
 
 def test_account_not_found(self):
@@ -107,8 +99,6 @@ def test_account_not_found(self):
 ######################################################################
 # UPDATE AN EXISTING ACCOUNT
 ######################################################################
-
-
 @app.route("/accounts/<int:account_id>", methods=["PUT"])
 def update_account(account_id):
     """
@@ -119,9 +109,7 @@ def update_account(account_id):
     account = Account.find(account_id)
     if not account:
         abort(status.HTTP_404_NOT_FOUND, f"Account with id [{account_id}] could not be found.")
-
     # ... place your code here to update the account ...
-
     return account.serialize(), status.HTTP_200_OK
 
     
@@ -130,9 +118,7 @@ def update_account(account_id):
 ######################################################################
 # DELETE AN ACCOUNT
 ######################################################################
-
 # ... place you code here to DELETE an account ...
-
 @app.route("/accounts/<int:account_id>", methods=["DELETE"])
 def delete_account(account_id):
     """
@@ -145,12 +131,9 @@ def delete_account(account_id):
         account.delete()
     return make_response("", status.HTTP_204_NO_CONTENT)
 
-
 ######################################################################
 #  U T I L I T Y   F U N C T I O N S
 ######################################################################
-
-
 def check_content_type(media_type):
     """Checks that the media type is correct"""
     content_type = request.headers.get("Content-Type")
