@@ -124,3 +124,102 @@ class TestAccountService(TestCase):
         self.assertEqual(response.status_code, status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
 
     # ADD YOUR TEST CASES HERE ...
+#Create a test case called test_read_an_account(self).
+#Make a self.client.post() call to accounts to create a new account passing in some account data.
+#Get back the account id that was generated from the json.
+#Make a self.client.get() call to /accounts/{id} passing in that account id.
+#Assert that the return code was HTTP_200_OK.
+#Check the json that was returned and assert that it is equal to the data that you sent.
+#Run nosetests and watch it fail because there is no code yet.
+#Add the code to the routes.py file to make the test pass.
+#Run nosetests again and watch it pass.
+#Commit your code and push it to GitHub.
+#Check your code coverage and make sure that it is at 100%.
+        
+    def test_read_an_account(self):
+        """It should Read an Account"""
+        account = AccountFactory()
+        response = self.client.post(
+            BASE_URL,
+            json=account.serialize(),
+            content_type="application/json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        new_account = response.get_json()
+        account_id = new_account["id"]
+        response = self.client.get(f"{BASE_URL}/{account_id}")
+
+        new_account = response.get_json()
+        print(new_account)
+
+
+#First write a test for the List function:
+#Create a test case called test_list_accounts(self).
+#Make a self.client.get() call to /accounts.
+#Assert that the return code was HTTP_200_OK.
+#Run nosetests and watch it fail because there is no code yet.
+#Add the code to the routes.py file to make the test pass.
+#Run nosetests again and watch it pass.
+#Commit your code and push it to GitHub.
+#Check your code coverage and make sure that it is at 100%.
+            
+        def test_list_accounts(self):
+            """It should list all accounts"""
+            self._create_accounts(5)
+            response = self.client.get(BASE_URL)
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            data = response.get_json()
+            self.assertEqual(len(data), 5)
+
+#Write a test for the Update function:          
+            
+    def test_update_account(self):
+        """It should Update an existing Account"""
+        # create an Account to update
+        test_account = AccountFactory()
+        resp = self.client.post(BASE_URL, json=test_account.serialize())
+        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+        # update the account
+        new_account = resp.get_json()
+        test_account.id = new_account["id"]
+        test_account.name = "Updated Name"
+        response = self.client.put(
+            f"{BASE_URL}/{test_account.id}",
+            json=test_account.serialize(),
+            content_type="application/json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        updated_account = response.get_json()
+        self.assertEqual(updated_account["name"], test_account.name)
+
+#Write a test for the Update function: 
+#Create a test case called test_delete_account(self).
+#Make a self.client.post() call to accounts to create a new account passing in some account data.
+#Get back the account id that was generated from the json.
+#Make a self.client.delete() call to /accounts/{id} passing in that account id.
+#Assert that the return code was HTTP_204_NO_CONTENT.
+#Run nosetests and watch it fail because there is no code yet.
+#Add the code to the routes.py file to make the test pass.
+#Run nosetests again and watch it pass.
+#Commit your code and push it to GitHub.
+#Check your code coverage and make sure that it is at 100%.
+
+    def test_delete_account(self):
+        """It should delete an Account"""
+        account = AccountFactory()
+        response = self.client.post(
+            BASE_URL,
+            json=account.serialize(),
+            content_type="application/json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        new_account = response.get_json()
+        account_id = new_account["id"]
+        response = self.client.delete(f"{BASE_URL}/{account_id}")
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        response = self.client.get(f"{BASE_URL}/{account_id}")
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+        
+
+

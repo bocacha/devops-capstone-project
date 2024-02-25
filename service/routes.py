@@ -63,19 +63,66 @@ def create_accounts():
 
 # ... place you code here to LIST accounts ...
 
+@app.route("/accounts", methods=["GET"])
+def list_accounts():
+    """
+    Lists all Accounts
+    This endpoint will return a list of all Accounts
+    """
+    app.logger.info("Request to list all Accounts")
+    accounts = Account.all()
+    return jsonify([account.serialize() for account in accounts]), status.HTTP_200_OK
+
 
 ######################################################################
 # READ AN ACCOUNT
 ######################################################################
 
-# ... place you code here to READ an account ...
+@app.route("/accounts/<int:account_id>", methods=["GET"])
+def get_accounts(account_id):
+    """
+    Reads an Account
+    This endpoint will read an Account based the account_id that is requested
+    """
+    app.logger.info("Request to read an Account with id: %s", account_id)
+    account = Account.find(account_id)
+    if not account:
+        abort(status.HTTP_404_NOT_FOUND, f"Account with id [{account_id}] could not be found.")
+    return account.serialize(), status.HTTP_200_OK
+
+#Create a test case called test_account_not_found(self).
+#Make a self.client.get() call to /accounts/{id} passing in 0 as the account id.
+#Assert that the return code was HTTP_404_NOT_FOUND.
+#Run nosetests and fix the code in routes.py until it passes.
+
+def test_account_not_found(self):
+    """It should return a 404 if the account is not found"""
+    response = self.client.get(f"{BASE_URL}/0")
+    self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
 
 
 ######################################################################
 # UPDATE AN EXISTING ACCOUNT
 ######################################################################
 
-# ... place you code here to UPDATE an account ...
+
+@app.route("/accounts/<int:account_id>", methods=["PUT"])
+def update_account(account_id):
+    """
+    Updates an Account
+    This endpoint will update an existing Account based on the account_id that is provided
+    """
+    app.logger.info("Request to update an Account with id: %s", account_id)
+    account = Account.find(account_id)
+    if not account:
+        abort(status.HTTP_404_NOT_FOUND, f"Account with id [{account_id}] could not be found.")
+
+    # ... place your code here to update the account ...
+
+    return account.serialize(), status.HTTP_200_OK
+
+    
 
 
 ######################################################################
@@ -83,6 +130,18 @@ def create_accounts():
 ######################################################################
 
 # ... place you code here to DELETE an account ...
+
+@app.route("/accounts/<int:account_id>", methods=["DELETE"])
+def delete_account(account_id):
+    """
+    Deletes an Account
+    This endpoint will delete an Account based on the account_id specified in the URL
+    """
+    app.logger.info("Request to delete an Account with id: %s", account_id)
+    account = Account.find(account_id)
+    if account:
+        account.delete()
+    return make_response("", status.HTTP_204_NO_CONTENT)
 
 
 ######################################################################
